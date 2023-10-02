@@ -268,7 +268,7 @@ func (ctx *textifyTraverseContext) handleElement(node *html.Node) error {
 			attrVal = ctx.normalizeHrefLink(attrVal)
 			// Don't print link href if it matches link element content or if the link is empty.
 			if (attrVal != "" && linkText != attrVal) && !ctx.options.OmitLinks {
-				hrefLink = "( " + attrVal + " )"
+				hrefLink = "(" + attrVal + ")"
 			}
 		}
 
