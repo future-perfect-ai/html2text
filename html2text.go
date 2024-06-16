@@ -441,13 +441,7 @@ func (ctx *textifyTraverseContext) emit(data string) error {
 	)
 	for _, line := range lines {
 		runes := []rune(line)
-		startsWithSpace := unicode.IsSpace(runes[0])
-		if !startsWithSpace && !ctx.endsWithSpace && !strings.HasPrefix(data, ".") {
-			if err = ctx.buf.WriteByte(' '); err != nil {
-				return err
-			}
-			ctx.lineLength++
-		}
+
 		ctx.endsWithSpace = unicode.IsSpace(runes[len(runes)-1])
 		for _, c := range line {
 			if _, err = ctx.buf.WriteString(string(c)); err != nil {
