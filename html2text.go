@@ -109,7 +109,6 @@ func FromString(input string, options ...Options) (string, error) {
 }
 
 var (
-	spacingRe = regexp.MustCompile(`[ \r\n\t]+`)
 	newlineRe = regexp.MustCompile(`\n\n+`)
 )
 
@@ -412,7 +411,7 @@ func (ctx *textifyTraverseContext) traverse(node *html.Node) error {
 		if ctx.isPre {
 			data = node.Data
 		} else {
-			data = strings.TrimSpace(spacingRe.ReplaceAllString(node.Data, " "))
+			data = node.Data
 		}
 		return ctx.emit(data)
 
@@ -442,12 +441,6 @@ func (ctx *textifyTraverseContext) emit(data string) error {
 	for _, line := range lines {
 		runes := []rune(line)
 		startsWithSpace := unicode.IsSpace(runes[0])
-		if !startsWithSpace && !ctx.endsWithSpace && !strings.HasPrefix(data, ".") {
-			if err = ctx.buf.WriteByte(' '); err != nil {
-				return err
-			}
-			ctx.lineLength++
-		}
 		ctx.endsWithSpace = unicode.IsSpace(runes[len(runes)-1])
 		for _, c := range line {
 			if _, err = ctx.buf.WriteString(string(c)); err != nil {
